@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+import re, sys, os
+
+examples = """fix: navbar not responsive on mobile
+test: prepared test cases for user authentication
+chore: moved to semantic versioning
+feat(auth): added social login using twitter
+"""
+
+types = """build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+ci: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+docs: Documentation only changes
+feat: A new feature
+fix: A bug fix
+perf: A code change that improves performance
+refactor: A code change that neither fixes a bug nor adds a feature
+style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+test: Adding missing tests or correcting existing tests
+"""
+
+def main():
+	emojies = {"new": ':tada:', "build" : ':construction:' , "ci" : ':green_heart', "docs": ':books:',
+	 "feature" : ':sparkles:' ,"fix" : ':bug:', "perf": ':racehorse:', "refactor" : ':hammer:' 
+	 , "style" : 1, "test": ':heavy_check_mark:', "chore" : ':arrow_up:' , "revert" : ':rewind:'}
+	pattern = r'(new|build|ci|docs|feat|fix|perf|refactor|style|test|chore|revert)(\([\w\-]+\))?:\s.*'
+	filename = sys.argv[1]
+	ss = open(filename, 'r').read()
+	m = re.match(pattern, ss)
+	if m == None:
+		print("\nCOMMIT FAILED!")
+		print("\nPlease enter commit message in the conventional format and try to commit again. Examples:")
+		print("\n" + examples)
+		print("\nCHECK COMMIT CONVENTIONS BELOW!\n" + types)
+		print("\nCheck the Conventional Commits at https://www.conventionalcommits.org/\n" )
+		sys.exit(1)
+	else:
+		commitPrefix = ss.split(':')[0]
+		commitPostfix = ss.split(':')[1]
+		if '(' in commitPrefix:
+			commitEmojie = emojies.get(commitPrefix.split('(')[0])
+			newCommit = open(filename, 'w')
+			newCommit.write(commitPrefix + ": " + commitEmojie + commitPostfix)
+		else:
+			commitEmojie = emojies.get(commitPrefix)
+			newCommit = open(filename, 'w')
+			newCommit.write(commitPrefix + ": " + commitEmojie + commitPostfix)
+
+if __name__ == "__main__":
+	main()

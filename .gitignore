@@ -1,0 +1,6 @@
+.vscode
+dist
+commit_linter/__pycache__
+commit_linter/commit_linter.egg*
+commit_linter.egg-info
+build

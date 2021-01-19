@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+import sys
+import re
+import subprocess
+
+#######################################################################
+##############     THIS HOOK IS FOR SERVER SIDE ONLY     ##############
+##############        CUSTOMIZE IT TO YOUR NEEDS         ##############
+#######################################################################
+
+examples = """fix: navbar not responsive on mobile
+test: prepared test cases for user authentication
+chore: moved to semantic versioning
+feat(auth): added social login using twitter
+"""
+
+types = """build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+ci: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+docs: Documentation only changes
+feat: A new feature
+fix: A bug fix
+perf: A code change that improves performance
+refactor: A code change that neither fixes a bug nor adds a feature
+style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+test: Adding missing tests or correcting existing tests
+"""
+
+
+pttrn = r'(:(\w+):) (\w+)(\([\w\-]+\))?:\s.*'
+
+#Format: "oldref newref branch"
+line = sys.stdin.read()
+(base, commit, ref) = line.strip().split()
+revs = base + "..." + commit
+proc = subprocess.Popen(['git', 'rev-list', '--oneline', '--no-merges',
+                         '--first-parent', revs], stdout=subprocess.PIPE)
+lines = proc.stdout.readlines()
+print(lines)
+
+if lines:
+    for line in lines:
+        rev = str(line)
+        rev = rev[:-3]
+        rev = rev.split(' ', 1)[1]
+        match = re.match(pttrn, rev)
+        if match == None:
+            print("\nCOMMIT FAILED AT ==>" + rev)
+            print("\nPlease enter commit message in the conventional format and try to commit again. Check Examples:\n" + examples)
+            print("\nCHECK COMMIT CONVENTIONS BELOW!\n" + types)
+            sys.exit(1)
