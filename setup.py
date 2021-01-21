@@ -16,16 +16,16 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Hoopher/commit-linter",
     packages=find_packages(),
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
     python_requires='>=3.6',
     include_package_data=True,
     package_data={'': ['hooks/*']},
     entry_points={
         'console_scripts': [
                 'commit-linter = commit_linter.main:main'],
-    }
+    },
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ]
 )
