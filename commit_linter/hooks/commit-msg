@@ -20,8 +20,8 @@ test: Adding missing tests or correcting existing tests
 
 def main():
 	emojies = {"new": ':tada:', "build" : ':construction:' , "ci" : ':green_heart', "docs": ':books:',
-	 "feature" : ':sparkles:' ,"fix" : ':bug:', "perf": ':racehorse:', "refactor" : ':hammer:' 
-	 , "style" : 1, "test": ':heavy_check_mark:', "chore" : ':arrow_up:' , "revert" : ':rewind:'}
+	 "feat" : ':sparkles:' ,"fix" : ':bug:', "perf": ':racehorse:', "refactor" : ':hammer:' 
+	 , "style" : ':umbrella:', "test": ':heavy_check_mark:', "chore" : ':arrow_up:' , "revert" : ':rewind:'}
 	pattern = r'(new|build|ci|docs|feat|fix|perf|refactor|style|test|chore|revert)(\([\w\-]+\))?:\s.*'
 	filename = sys.argv[1]
 	ss = open(filename, 'r').read()
