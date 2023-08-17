@@ -35,7 +35,7 @@ def main():
 		sys.exit(1)
 	else:
 		commitPrefix = ss.split(':')[0]
-		commitPostfix = ss.split(':')[1]
+		commitPostfix = ss.split(':', 1)[1]
 		if '(' in commitPrefix:
 			commitEmojie = emojies.get(commitPrefix.split('(')[0])
 			newCommit = open(filename, 'w')
