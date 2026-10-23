@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 import os
-import stat
 import shutil
-import pkg_resources
+import stat
 import sys
 
+
 def enforce():
-    githooks_path = pkg_resources.resource_filename(
-        __name__, "hooks/commit-msg")
+    githooks_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hooks/commit-msg")
     user_repository = os.path.join(os.getcwd(), ".git/hooks")
 
-    if os.path.exists(user_repository+"/commit-msg"):
+    if os.path.exists(user_repository + "/commit-msg"):
         print("your repo already enforced with commit-msg hook")
     else:
         shutil.copy(githooks_path, user_repository)
@@ -18,20 +17,21 @@ def enforce():
         os.chmod(user_repository + '/commit-msg', st.st_mode | stat.S_IEXEC)
         print("Your Repo has been enforced with git commit-msg hook")
 
+
 def unenforce():
     user_repository = os.path.join(os.getcwd(), ".git/hooks")
-    if os.path.exists(user_repository+"/commit-msg"):
-        os.remove(user_repository+"/commit-msg")
+    if os.path.exists(user_repository + "/commit-msg"):
+        os.remove(user_repository + "/commit-msg")
         print("The hook has been removed")
     else:
         print("The hook already does not exist")
+
 
 def main():
     if not os.path.isdir('.git'):
         print('error: .git directory not found in the current path. this is not a git repository?')
         return
-    githooks_path = pkg_resources.resource_filename(
-        __name__, "hooks/commit-msg")
+    githooks_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hooks/commit-msg")
 
     if shutil.which('git') == None:
         print('error: git not found on path. please install git and then run pip install --upgrade commit-linter')
@@ -40,7 +40,7 @@ def main():
         print('error: git hooks template not found on %s, please run pip install commit-linter' % githooks_path)
         return
     else:
-        if len(sys.argv) > 1 :
+        if len(sys.argv) > 1:
             if sys.argv[1] == "install":
                 enforce()
             elif sys.argv[1] == "remove":
